@@ -1,0 +1,27 @@
+with "aws";
+
+with "../files_services/files_services.gpr";
+with "../shared.gpr";
+
+library project Templates is
+
+  for Create_Missing_Dirs use "True";
+
+  Src_Dirs := ();
+  Src_Dirs := Src_Dirs & "./src";
+  for Source_Dirs use Src_Dirs;
+
+  Exc_Src_Lst := ();
+  for Excluded_Source_Files use Exc_Src_Lst;
+
+  for Object_Dir use "./obj";
+  for Library_Dir use "./lib";
+
+  for Library_Name use "jpi_templates";
+  for Library_Kind use "static";
+
+  package Compiler renames Shared.Compiler;
+
+  package Builder renames Shared.Builder;
+
+end Templates;

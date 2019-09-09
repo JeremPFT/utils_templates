@@ -1,0 +1,55 @@
+-- with "common_jpi";
+
+-- with "string_utils";
+-- with "file_io";
+
+with "aws";
+with "aunit";
+-- with "../templates.gpr";
+
+-- with "../../code_generator/modules/utils_file_io/file_io.gpr";
+
+project Templates_Test is
+
+  for Create_Missing_Dirs use "True";
+
+  Src_Dirs := ();
+  Src_Dirs := Src_Dirs & "./src";
+  Src_Dirs := Src_Dirs & "../src";
+  Src_Dirs := Src_Dirs & "../../files_services/src";
+  Src_Dirs := Src_Dirs & "../../strings_services/src";
+  Src_Dirs := Src_Dirs & "../../assertions/src";
+  for Source_Dirs use Src_Dirs;
+
+  Excl_Src_Lst := ();
+  for Excluded_Source_Files use Excl_Src_Lst;
+
+  for Object_Dir use "obj";
+  for Exec_Dir use "bin";
+
+  for Main use ("templates-test-run.adb");
+
+  package Compiler is
+    Debug             := "-g";
+    No_Optimisation   := "-O0";
+    Turn_On_All_Info_Warnings := "-gnatwa";
+    All_Validity_Check := "-gnatVa";
+
+    for Default_Switches ("Ada") use
+      (Debug,
+       No_Optimisation,
+       Turn_On_All_Info_Warnings,
+       All_Validity_Check);
+  end Compiler;
+
+  package Binder is
+  end Binder;
+  -- package Gnattest renames Common_Jpi.Gnattest;
+
+  package Builder is
+    Number_Of_Processors := "-j2";
+    for Switches ("ada") use ( Number_Of_Processors );
+    -- for Executable ("run.adb") use external ("exec_name");
+  end Builder;
+
+end Templates_Test;
